@@ -50,11 +50,3 @@ source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 streamlit run app.py
 ```
-
-## Anggota Kelompok 1
-
-| Nama           | NIM        | Peran                                   |
-| :------------- | :--------- | :-------------------------------------- |
-| Nama Anggota 1 | 230xxxx001 | Lead Developer & Arsitektur Aplikasi    |
-| Nama Anggota 2 | 230xxxx002 | Pemodelan Matematika & Validasi Numerik |
-| Nama Anggota 3 | 230xxxx003 | Pengumpulan Data & Penyusunan Laporan   |
