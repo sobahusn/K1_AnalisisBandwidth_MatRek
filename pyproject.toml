@@ -1,0 +1,17 @@
+[project]
+name = "k1-analisisbandwidth-matrek"
+version = "0.1.0"
+description = "Sebuah sistem untuk menganalisis bandwidth jaringan menggunakan metode Matrek(Matematika Rekayasa)."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "streamlit>=1.39.0",
+    "numpy>=1.26.0",
+    "pandas>=2.2.0",
+    "scipy>=1.13.0",
+    "sympy>=1.13.0",
+    "plotly>=5.24.0",
+    "kaleido>=0.2.1",
+    "psutil>=6.0.0",
+    "openpyxl>=3.1.5"
+]
