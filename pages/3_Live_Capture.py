@@ -1,4 +1,4 @@
-"""Halaman 3: Perekaman laju bandwidth antarmuka jaringan lokal secara real-time via psutil."""
+"""Perekaman laju bandwidth antarmuka jaringan lokal secara real-time via psutil."""
 
 from __future__ import annotations
 
@@ -13,9 +13,7 @@ from core.plotting import COLOR_PRIMARY, _apply_base_layout
 from core.state_manager import set_active_dataset
 
 st.title("3. Live Capture Jaringan Lokal")
-st.caption(
-    "Langkah 2 Penelitian (Pengukuran Langsung): Merekam laju transfer aktual perangkat melalui psutil."
-)
+st.caption("Pengukuran laju transfer aktual perangkat melalui psutil.")
 
 st.markdown("""
     Fitur ini membaca penghitung byte antarmuka jaringan lokal (`psutil.net_io_counters`) pada interval tetap.

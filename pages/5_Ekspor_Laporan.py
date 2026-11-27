@@ -1,4 +1,4 @@
-"""Halaman 5: Unduh grafik PNG resolusi tinggi, CSV bersih, dan generator draf Subbab 4.2-4.6."""
+"""Unduh grafik PNG resolusi tinggi, CSV bersih, dan draf laporan."""
 
 from __future__ import annotations
 
@@ -22,9 +22,6 @@ state = get_active_state()
 is_valid, status_msg = validate_dataset(state.df)
 
 st.title("5. Ekspor Grafik, Data Bersih, dan Draf Laporan")
-st.caption(
-    "Menyiapkan artefak siap pakai untuk penyusunan laporan Mini Research Subbab 4.2 hingga 4.6."
-)
 
 if not is_valid:
     st.error(status_msg)

@@ -1,4 +1,4 @@
-"""Halaman Beranda: konteks masalah, tujuan penelitian, 6 langkah kerja, dan status dataset."""
+"""Konteks masalah, tujuan penelitian, 6 langkah kerja, dan status dataset."""
 
 from __future__ import annotations
 

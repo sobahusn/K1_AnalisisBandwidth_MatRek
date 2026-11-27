@@ -1,4 +1,4 @@
-"""Halaman 4: Komparasi Analitis vs Trapesium vs Simpson, evaluasi derajat R2/RMSE, uji ekstrapolasi, dan keterbatasan."""
+"""Simulasi Skenario, Validasi Numerik, dan Keterbatasan: Komparasi Analitis vs Trapesium vs Simpson, evaluasi derajat R2/RMSE, uji ekstrapolasi, dan keterbatasan."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ is_valid, status_msg = validate_dataset(state.df)
 
 st.title("4. Simulasi Skenario, Validasi Numerik, dan Keterbatasan")
 st.caption(
-    "Langkah 5 & 6 Penelitian: Membandingkan 3 metode integrasi, menguji sensitivitas derajat, dan mengkaji batas model."
+    "Perbandingan 3 metode integrasi, menguji sensitivitas derajat, dan mengkaji batas model."
 )
 
 if not is_valid:

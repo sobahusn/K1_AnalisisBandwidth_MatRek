@@ -1,4 +1,4 @@
-"""Halaman 1: Pemilihan preset CSV, unggah CSV/XLSX, pengaturan satuan, dan editor tabel interaktif."""
+"""Pemilihan preset CSV, unggah CSV/XLSX, pengaturan satuan, dan editor tabel interaktif."""
 
 from __future__ import annotations
 
@@ -20,11 +20,12 @@ state = get_active_state()
 
 st.title("1. Eksplorasi Data dan Penentuan Satuan")
 st.caption(
-    "Langkah 1 & 2 Penelitian: Menetapkan periode [a, b], satuan pengukuran, dan menyusun tabel data B(t)."
+    "Pengaturan periode [a, b], satuan pengukuran, dan menyusun tabel data B(t)."
 )
 
-source_tab1, source_tab2 = st.tabs(["Dataset Preset", "Unggah CSV / XLSX"])
-
+source_tab1, source_tab2, source_tab3 = st.tabs(
+    ["Dataset Preset", "Unggah CSV / XLSX", "Input Manual Cepat"]
+)
 with source_tab1:
     preset_names = list(PRESET_DATASETS.keys())
     default_idx = (
@@ -69,11 +70,66 @@ with source_tab2:
                     set_active_dataset(cleaned_df, f"Unggahan: {uploaded_file.name}")
                     st.success(f"Berkas '{uploaded_file.name}' aktif untuk analisis.")
                     st.rerun()
-        except Exception as exc:
+        except (
+            OSError,
+            UnicodeDecodeError,
+            pd.errors.ParserError,
+            pd.errors.EmptyDataError,
+            ValueError,
+        ) as exc:
             st.error(
                 f"Gagal membaca berkas. Pastikan format CSV atau XLSX tidak rusak. Detail: {exc}"
             )
 
+with source_tab3:
+    st.markdown(
+        "Masukkan angka dipisahkan koma (misalnya `0, 1, 2, 3, 4, 5, 6`) untuk langsung membentuk tabel baru."
+    )
+    in_col1, in_col2 = st.columns(2)
+    raw_t_text = in_col1.text_input(
+        "Deret Waktu (t)", placeholder="0, 1, 2, 3, 4, 5, 6"
+    )
+    raw_b_text = in_col2.text_input(
+        "Deret Bandwidth B(t)", placeholder="2, 3, 5, 4, 7, 6, 3"
+    )
+
+    btn_col1, btn_col2 = st.columns([1, 1])
+    if btn_col1.button("Terapkan Input Manual", type="primary"):
+        try:
+            t_vals = [
+                float(x.strip())
+                for x in raw_t_text.replace(";", ",").split(",")
+                if x.strip()
+            ]
+            b_vals = [
+                float(x.strip())
+                for x in raw_b_text.replace(";", ",").split(",")
+                if x.strip()
+            ]
+            if len(t_vals) != len(b_vals):
+                st.error(
+                    f"Jumlah titik tidak sama: waktu ({len(t_vals)}) vs bandwidth ({len(b_vals)})."
+                )
+            else:
+                manual_df = clean_bandwidth_dataframe(
+                    pd.DataFrame({"waktu": t_vals, "bandwidth": b_vals})
+                )
+                valid_manual, manual_msg = validate_dataset(manual_df)
+                if not valid_manual:
+                    st.error(manual_msg)
+                else:
+                    set_active_dataset(manual_df, "Input Manual Cepat")
+                    st.success(f"Input manual diterapkan ({len(manual_df)} titik).")
+                    st.rerun()
+        except ValueError:
+            st.error("Format tidak valid. Pastikan hanya berisi angka dan tanda koma.")
+
+    if btn_col2.button("Reset ke 3 Baris Kosong"):
+        starter_df = pd.DataFrame(
+            {"waktu": [0.0, 1.0, 2.0], "bandwidth": [0.0, 0.0, 0.0]}
+        )
+        set_active_dataset(starter_df, "Input Manual (Edit Tabel)")
+        st.rerun()
 st.divider()
 
 st.subheader("Pengaturan Satuan dan Penyuntingan Data")
