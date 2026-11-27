@@ -15,6 +15,12 @@ from core.plotting import build_custom_function_chart, build_integral_chart
 from core.state_manager import get_active_state, validate_dataset
 
 state = get_active_state()
+
+st.title("2. Pemodelan Kurva B(t) dan Integral Analitis")
+st.caption(
+    "Pembentukan fungsi kontinu B(t) dan menghitung integral tentu secara analitis."
+)
+
 model_source = st.radio(
     "Sumber Fungsi B(t)",
     options=["Regresi Polinomial dari Dataset Aktif", "Input Persamaan B(t) Manual"],
@@ -54,7 +60,7 @@ if model_source == "Input Persamaan B(t) Manual":
             rate_unit=state.rate_unit,
             mean_value=mean_b if show_mean_line else None,
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         m1, m2, m3 = st.columns(3)
         m1.metric("Total Data (MB)", f"{unit_res.megabytes:,.2f} MB")
@@ -72,11 +78,6 @@ if model_source == "Input Persamaan B(t) Manual":
     st.stop()
 
 is_valid, status_msg = validate_dataset(state.df)
-
-st.title("2. Pemodelan Kurva B(t) dan Integral Analitis")
-st.caption(
-    "Pembentukan fungsi kontinu B(t) dan menghitung integral tentu secara analitis."
-)
 
 if not is_valid:
     st.error(status_msg)
@@ -183,18 +184,7 @@ fig = build_integral_chart(
     mean_value=mean_b if show_mean_line else None,
 )
 
-fig = build_integral_chart(
-    t_obs=t_obs,
-    b_obs=b_obs,
-    coefficients=fit_res.coefficients,
-    a=a_val,
-    b=b_val,
-    time_unit=state.time_unit,
-    rate_unit=state.rate_unit,
-    degree=degree,
-    chart_mode=chart_mode,
-)
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 m1, m2, m3, m4 = st.columns(4)
 m1.metric("Total Data (MB)", f"{unit_res.megabytes:,.2f} MB")

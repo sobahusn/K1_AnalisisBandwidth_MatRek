@@ -95,7 +95,7 @@ if st.button("Mulai Perekaman", type="primary"):
 
             live_df = pd.DataFrame(records)
             chart_placeholder.plotly_chart(
-                _build_live_fig(live_df), use_container_width=True
+                _build_live_fig(live_df), width="stretch"
             )
             metric_placeholder.caption(
                 f"Sampel {step}/{total_steps} | Waktu: {elapsed:.1f} detik | Laju terakhir: {mbps:.3f} Mbps"
@@ -119,7 +119,7 @@ if not last_df.empty:
     st.subheader("Hasil Perekaman Terakhir")
     col_tbl, col_act = st.columns([2, 1], gap="large")
     with col_tbl:
-        st.dataframe(last_df, use_container_width=True, hide_index=True)
+        st.dataframe(last_df, width="stretch", hide_index=True)
     with col_act:
         st.metric("Jumlah Sampel", f"{len(last_df)}")
         st.metric("Rata-rata Laju", f"{last_df['bandwidth'].mean():.3f} Mbps")

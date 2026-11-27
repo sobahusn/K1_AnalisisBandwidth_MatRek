@@ -64,7 +64,7 @@ with source_tab2:
                 st.error(f"Berkas gagal divalidasi: {upload_msg}")
             else:
                 st.dataframe(
-                    cleaned_df.head(10), use_container_width=True, hide_index=True
+                    cleaned_df.head(10), width="stretch", hide_index=True
                 )
                 if st.button("Terapkan Berkas Unggahan", type="primary"):
                     set_active_dataset(cleaned_df, f"Unggahan: {uploaded_file.name}")
@@ -155,7 +155,7 @@ if chosen_time != state.time_unit or chosen_rate != state.rate_unit:
 edited_df = st.data_editor(
     state.df,
     num_rows="dynamic",
-    use_container_width=True,
+    width="stretch",
     column_config={
         "waktu": st.column_config.NumberColumn(
             label=f"Waktu ({chosen_time})",

@@ -62,7 +62,7 @@ with col_left:
             },
         ]
     )
-    st.dataframe(steps_df, use_container_width=True, hide_index=True)
+    st.dataframe(steps_df, width="stretch", hide_index=True)
 
 with col_right:
     st.subheader("Ringkasan Dataset Aktif")
@@ -77,7 +77,7 @@ with col_right:
         m2.metric(
             "Rata-rata Laju", f"{state.df['bandwidth'].mean():.2f} {state.rate_unit}"
         )
-        st.dataframe(state.df.head(6), use_container_width=True, hide_index=True)
+        st.dataframe(state.df.head(6), width="stretch", hide_index=True)
     else:
         st.error(status_msg)
         st.info(

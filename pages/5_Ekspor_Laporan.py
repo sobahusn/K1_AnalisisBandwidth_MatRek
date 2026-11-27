@@ -70,7 +70,7 @@ with d1:
         data=csv_bytes,
         file_name="dataset_bandwidth_bersih.csv",
         mime="text/csv",
-        use_container_width=True,
+        width="stretch",
     )
 
 with d2:
@@ -81,7 +81,7 @@ with d2:
             data=png_integral,
             file_name="grafik_kurva_bandwidth.png",
             mime="image/png",
-            use_container_width=True,
+            width="stretch",
         )
     except (ValueError, RuntimeError) as exc:
         st.warning(f"Ekspor PNG membutuhkan paket kaleido. Detail: {exc}")
@@ -94,7 +94,7 @@ with d3:
             data=png_comp,
             file_name="grafik_komparasi_metode.png",
             mime="image/png",
-            use_container_width=True,
+            width="stretch",
         )
     except (ValueError, RuntimeError) as exc:
         st.warning(f"Ekspor PNG membutuhkan paket kaleido. Detail: {exc}")

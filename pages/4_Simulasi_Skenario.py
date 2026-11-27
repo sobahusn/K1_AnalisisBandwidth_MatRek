@@ -76,7 +76,7 @@ comp_df = pd.DataFrame(
 
 col_tbl, col_chart = st.columns([1.2, 1], gap="large")
 with col_tbl:
-    st.dataframe(comp_df, use_container_width=True, hide_index=True)
+    st.dataframe(comp_df, width="stretch", hide_index=True)
     st.caption(
         f"Integrasi numerik menggunakan {numeric_res.n_points_used} titik data diskrit dalam rentang [{a_val:g}, {b_val:g}]. "
         "Galat relatif dihitung terhadap hasil integral analitis model polinomial."
@@ -85,7 +85,7 @@ with col_chart:
     bar_fig = build_comparison_bar_chart(
         u_ana.megabytes, u_trap.megabytes, u_simp.megabytes
     )
-    st.plotly_chart(bar_fig, use_container_width=True)
+    st.plotly_chart(bar_fig, width="stretch")
 
 st.divider()
 
@@ -104,7 +104,7 @@ for d in range(1, max_deg + 1):
             "Total Analitis (MB)": round(conv_d.megabytes, 2),
         }
     )
-st.dataframe(pd.DataFrame(deg_rows), use_container_width=True, hide_index=True)
+st.dataframe(pd.DataFrame(deg_rows), width="stretch", hide_index=True)
 
 st.divider()
 
@@ -127,7 +127,7 @@ extrap_fig = build_extrapolation_chart(
     rate_unit=state.rate_unit,
     degree=degree,
 )
-st.plotly_chart(extrap_fig, use_container_width=True)
+st.plotly_chart(extrap_fig, width="stretch")
 
 st.divider()
 
