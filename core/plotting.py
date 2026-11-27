@@ -68,6 +68,7 @@ def build_integral_chart(
     rate_unit: str,
     degree: int,
     chart_mode: str = "Kurva Polinomial Analitis",
+    mean_value: float | None = None,
 ) -> go.Figure:
     """Membuat grafik titik data, kurva B(t), garis Trapesium, dan arsiran area integral pada [a, b]."""
     t_min = float(np.min(t_obs))
@@ -145,6 +146,7 @@ def build_integral_chart(
                 name="Garis Trapesium (Data Observasi)",
             )
         )
+
     else:
         fig.add_trace(
             go.Scatter(
@@ -158,6 +160,16 @@ def build_integral_chart(
                 },
                 name="Data Observasi",
             )
+        )
+
+    if mean_value is not None:
+        fig.add_hline(
+            y=mean_value,
+            line_dash="dash",
+            line_color=COLOR_SECONDARY,
+            line_width=1.8,
+            annotation_text=f"Rata-rata B̄ = {mean_value:.2f} {rate_unit}",
+            annotation_position="top left",
         )
 
     fig.add_vline(x=a, line_dash="dot", line_color=COLOR_MUTED, line_width=1.2)
@@ -274,6 +286,61 @@ def build_comparison_bar_chart(
         title="Perbandingan Total Transfer Data Berdasarkan Metode Integrasi",
         x_title="Metode Integrasi",
         y_title="Total Volume Data (MB)",
+    )
+
+
+def build_custom_function_chart(
+    t_grid: np.ndarray,
+    b_grid: np.ndarray,
+    a: float,
+    b: float,
+    time_unit: str,
+    rate_unit: str,
+    mean_value: float | None = None,
+) -> go.Figure:
+    """Membuat grafik kurva persamaan B(t) manual beserta arsiran area integral pada [a, b]."""
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=t_grid,
+            y=b_grid,
+            mode="lines",
+            line={"width": 0},
+            fill="tozeroy",
+            fillcolor=COLOR_FILL,
+            name=f"Area Integral [{a:g}, {b:g}]",
+            hoverinfo="skip",
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=t_grid,
+            y=b_grid,
+            mode="lines",
+            line={"color": COLOR_PRIMARY, "width": 2.5},
+            name="Persamaan Manual B(t)",
+        )
+    )
+
+    if mean_value is not None:
+        fig.add_hline(
+            y=mean_value,
+            line_dash="dash",
+            line_color=COLOR_SECONDARY,
+            line_width=1.8,
+            annotation_text=f"Rata-rata B̄ = {mean_value:.2f} {rate_unit}",
+            annotation_position="top left",
+        )
+
+    fig.add_vline(x=a, line_dash="dot", line_color=COLOR_MUTED, line_width=1.2)
+    fig.add_vline(x=b, line_dash="dot", line_color=COLOR_MUTED, line_width=1.2)
+
+    return _apply_base_layout(
+        fig,
+        title=f"Kurva Persamaan Manual B(t) pada [{a:g}, {b:g}] {time_unit}",
+        x_title=f"Waktu t ({time_unit})",
+        y_title=f"Laju Bandwidth ({rate_unit})",
     )
 
 

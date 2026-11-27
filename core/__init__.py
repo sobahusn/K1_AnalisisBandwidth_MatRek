@@ -7,6 +7,7 @@ from core.calculus import (
     UnitConversionResult,
     compare_methods,
     compute_analytical_integral,
+    compute_custom_symbolic_integral,
     compute_numeric_integrals,
     convert_integral_units,
 )
@@ -49,6 +50,7 @@ __all__ = [
     "clean_bandwidth_dataframe",
     "compare_methods",
     "compute_analytical_integral",
+    "compute_custom_symbolic_integral",
     "compute_numeric_integrals",
     "convert_integral_units",
     "evaluate_polynomial",

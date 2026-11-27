@@ -19,7 +19,7 @@ TIME_UNITS: dict[str, float] = {
 }
 
 # Faktor konversi dari (satuan_laju * detik) ke Megabyte desimal (1 MB = 8 Mb).
-RATE_TO_MB_PER_SEC: Dict[str, float] = {
+RATE_TO_MB_PER_SEC: dict[str, float] = {
     "Mbps": 1.0 / 8.0,
     "MB/s": 1.0,
     "MB/menit": 1.0 / 60.0,

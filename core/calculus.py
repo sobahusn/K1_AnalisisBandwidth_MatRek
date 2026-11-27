@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import numpy as np
 import sympy as sp
 from scipy.integrate import simpson, trapezoid
+from sympy.parsing.sympy_parser import parse_expr
 
 from core.state_manager import RATE_TO_MB_PER_SEC, TIME_UNITS
 
@@ -147,6 +148,72 @@ def compute_numeric_integrals(
         simpson_raw=simp_val,
         n_points_used=int(t_sub.size),
     )
+
+
+def compute_custom_symbolic_integral(
+    expr_str: str,
+    a: float,
+    b: float,
+) -> tuple[AnalyticalIntegralResult, np.ndarray, np.ndarray]:
+    """Mem-parsing persamaan B(t) manual, menghitung integral tentu, dan menghasilkan kurva evaluasi."""
+    if b <= a:
+        raise ValueError("Batas atas b harus lebih besar daripada batas bawah a.")
+
+    t_sym = sp.Symbol("t", real=True)
+    allowed_locals = {
+        "t": t_sym,
+        "sin": sp.sin,
+        "cos": sp.cos,
+        "tan": sp.tan,
+        "exp": sp.exp,
+        "sqrt": sp.sqrt,
+        "log": sp.log,
+        "pi": sp.pi,
+    }
+    b_expr = parse_expr(expr_str, local_dict=allowed_locals)
+    if not b_expr.free_symbols.issubset({t_sym}):
+        raise ValueError(
+            "Gunakan variabel 't' saja sebagai peubah waktu pada persamaan B(t)."
+        )
+
+    f_expr = sp.integrate(b_expr, t_sym)
+    if f_expr.has(sp.Integral):
+        exact_val = float(sp.N(sp.Integral(b_expr, (t_sym, a, b))))
+        f_at_a, f_at_b = 0.0, exact_val
+        latex_antideriv = r"F(t) = \int B(t)\,dt \text{ (dievaluasi numerik adaptif)}"
+        latex_eval = f"\\int_{{{a:g}}}^{{{b:g}}} B(t)\\,dt \\approx {exact_val:,.4f}"
+    else:
+        f_at_a = float(sp.N(f_expr.subs(t_sym, a)))
+        f_at_b = float(sp.N(f_expr.subs(t_sym, b)))
+        exact_val = f_at_b - f_at_a
+        latex_antideriv = f"F(t) = \\int B(t)\\,dt = {sp.latex(f_expr)} + C"
+        latex_eval = (
+            f"F({b:g}) - F({a:g}) = {f_at_b:,.4f} - ({f_at_a:,.4f}) = {exact_val:,.4f}"
+        )
+
+    latex_b_t = f"B(t) = {sp.latex(b_expr)}"
+    latex_definite = (
+        f"\\int_{{{a:g}}}^{{{b:g}}} B(t)\\,dt = \\Big[ F(t) \\Big]_{{{a:g}}}^{{{b:g}}} "
+        f"= F({b:g}) - F({a:g})"
+    )
+
+    t_grid = np.linspace(a, b, 250)
+    b_func = sp.lambdify(t_sym, b_expr, modules="numpy")
+    # Broadcast menangani ekspresi konstan (misalnya B(t) = 10) yang mengembalikan skalar.
+    b_grid = np.broadcast_to(
+        np.asarray(b_func(t_grid), dtype=float), t_grid.shape
+    ).copy()
+
+    result = AnalyticalIntegralResult(
+        value_raw=exact_val,
+        f_at_a=f_at_a,
+        f_at_b=f_at_b,
+        latex_b_t=latex_b_t,
+        latex_antiderivative=latex_antideriv,
+        latex_definite_integral=latex_definite,
+        latex_evaluation=latex_eval,
+    )
+    return result, t_grid, b_grid
 
 
 def convert_integral_units(
