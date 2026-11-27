@@ -131,10 +131,10 @@ st.plotly_chart(extrap_fig, width="stretch")
 
 st.divider()
 
-st.subheader("Asumsi dan Keterbatasan Model (Langkah 6)")
-st.markdown("""
-    1. **Asumsi kekontinuan:** Model mengasumsikan laju bandwidth $B(t)$ berubah mulus sepanjang selang $[a, b]$, padahal trafik jaringan nyata bersifat diskrit per paket dan dapat mengalami lonjakan mendadak (*burst*).
-    2. **Risiko overfitting polinomial derajat tinggi:** Menambah derajat polinomial menaikkan $R^2$ pada titik observasi, tetapi memicu osilasi tajam di antara titik sampel maupun saat ekstrapolasi (fenomena Runge).
-    3. **Validitas ekstrapolasi:** Polinomial tidak memiliki batas fisik non-negatif; proyeksi di luar $[a, b]$ dapat menghasilkan nilai bandwidth negatif atau melonjak melampaui kapasitas tautan fisik.
-    4. **Keterbatasan interval sampling:** Pada Aturan Trapesium dan Simpson, akurasi bergantung pada kerapatan waktu pengambilan sampel. Interval terlalu jarang dapat melewatkan puncak trafik singkat.
+with st.expander("Asumsi dan Keterbatasan Model"):
+    st.markdown("""
+        1. **Asumsi kekontinuan:** Model mengasumsikan laju bandwidth $B(t)$ berubah mulus sepanjang selang $[a, b]$, padahal trafik jaringan nyata bersifat diskrit per paket dan dapat mengalami lonjakan mendadak (*burst*).
+        2. **Risiko overfitting polinomial derajat tinggi:** Menambah derajat polinomial menaikkan $R^2$ pada titik observasi, tetapi memicu osilasi tajam di antara titik sampel maupun saat ekstrapolasi (fenomena Runge).
+        3. **Validitas ekstrapolasi:** Polinomial tidak memiliki batas fisik non-negatif; proyeksi di luar $[a, b]$ dapat menghasilkan nilai bandwidth negatif atau melonjak melampaui kapasitas tautan fisik.
+        4. **Keterbatasan interval sampling:** Pada Aturan Trapesium dan Simpson, akurasi bergantung pada kerapatan waktu pengambilan sampel. Interval terlalu jarang dapat melewatkan puncak trafik singkat.
     """)
